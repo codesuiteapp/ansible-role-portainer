@@ -9,6 +9,17 @@ services:
       - "TZ=Asia/Seoul"
       - VIRTUAL_HOST={{ portainer_domain_name }}
       - VIRTUAL_PORT=9000
+{% if use_traefik %}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.entrypoints=web,websecure"
+      - "traefik.http.routers.portainer.rule=Host(`${trf_domain}`)"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - "traefik.http.routers.portainer.service=portainer"
+    {% if use_traefik_tls %}
+      - "traefik.http.routers.portainer.tls=true"
+    {% endif %}
+{% endif %}
     ports:
       - {{ portainer_http }}:8000
       - {{ portainer_https }}:9443
