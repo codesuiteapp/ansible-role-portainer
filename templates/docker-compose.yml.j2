@@ -16,9 +16,9 @@ services:
       - "traefik.http.routers.portainer.rule=Host(`${trf_domain}`)"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
       - "traefik.http.routers.portainer.service=portainer"
-    {% if use_traefik_tls %}
+{% endif %}
+{% if use_traefik and use_traefik_tls %}
       - "traefik.http.routers.portainer.tls=true"
-    {% endif %}
 {% endif %}
     ports:
       - {{ portainer_http }}:8000
