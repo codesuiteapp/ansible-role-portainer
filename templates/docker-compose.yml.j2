@@ -3,10 +3,12 @@ services:
   portainer:
     image: ${DOCKER_IMAGE}
     container_name: "{{ container_name }}"
-    user: root
+    # user: root
+    privileged: true
     environment:
       - "TZ=Asia/Seoul"
-      - "PASSWORD={{ portainer_password }}"
+      - VIRTUAL_HOST={{ portainer_domain_name }}
+      - VIRTUAL_PORT=9000
     ports:
       - {{ portainer_http }}:8000
       - {{ portainer_https }}:9443
