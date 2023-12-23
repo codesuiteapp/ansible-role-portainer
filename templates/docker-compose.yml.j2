@@ -1,0 +1,25 @@
+version: "3"
+services:
+  portainer:
+    image: ${DOCKER_IMAGE}
+    container_name: "{{ container_name }}"
+    user: root
+    environment:
+      - "TZ=Asia/Seoul"
+      - "PASSWORD={{ portainer_password }}"
+    ports:
+      - {{ portainer_http }}:8000
+      - {{ portainer_https }}:9443
+      - {{ portainer_port }}:9000
+    volumes:
+      - {{ portainer_data }}:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+{% if use_dkr_net %}
+    networks:
+      - {{ dkr_network }}
+
+networks:
+  {{ dkr_network }}:
+    external: true
+{% endif %}

@@ -1,0 +1,29 @@
+---
+- name: Creates directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ adm_user }}"
+    group: "{{ adm_group }}"
+    mode: '0755'
+    force: false
+  with_items:
+    - "{{ portainer_home }}"
+    - "{{ portainer_data }}"
+
+- name: Copy file
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ adm_user }}"
+    group: "{{ adm_group }}"
+    mode: '0644'
+    backup: true
+  with_items:
+    - { src: '.env.j2', dest: '{{ portainer_home }}/.env' }
+    - { src: 'docker-compose.yml.j2', dest: '{{ portainer_home }}/docker-compose.yml' }
+
+- name: Restart portainer
+  ansible.builtin.shell: echo success
+  notify:
+    Restart portainer

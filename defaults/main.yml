@@ -1,0 +1,30 @@
+---
+image_registry_server: "docker.io"
+portainer_image: "portainer/portainer-ce"
+portainer_ver: "latest"
+container_name: portainer
+portainer_http: 8000
+portainer_https: 9443
+portainer_port: 9000
+portainer_password: asdfg1
+
+docker_compose_bin: "docker-compose"
+use_dkr_net: true
+use_traefik: false
+use_traefik_tls: false
+dkr_network: devops_net
+use_extra_hosts: false
+add_etc_host: "10.11.22.10   devops.com"
+
+app_home_dir: /app
+app_data_dir: /data
+app_logs_dir: /log
+
+portainer_home: "{{ app_home_dir }}/portainer-docker"
+portainer_data: "{{ app_data_dir }}/portainer"
+portainer_logs: "{{ app_logs_dir }}/portainer"
+
+create_user: false
+adm_user: "appadm"
+adm_group: "appadm"
+adm_uid: "1000"
