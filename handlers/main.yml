@@ -1,15 +1,24 @@
+---
 - name: Start portainer
   ansible.builtin.command: "{{ docker_compose_bin }} up --detach"
   args:
     chdir: "{{ portainer_home }}"
   register: result
-  changed_when: result.changed
+  changed_when: result.rc != 0
 
-- name: Restart portainer
-  ansible.builtin.shell:
-    "{{ docker_compose_bin }} down; {{ docker_compose_bin }} up --detach"
+- name: Stop portainer
+  ansible.builtin.command: "{{ docker_compose_bin }} down"
   args:
     chdir: "{{ portainer_home }}"
   register: result
-  changed_when: result.changed
+  changed_when: result.rc != 0
+
+- name: Restart portainer
+  ansible.builtin.shell: |
+    {{ docker_compose_bin }} down
+    {{ docker_compose_bin }} up --detach
+  args:
+    chdir: "{{ portainer_home }}"
+  register: result
+  changed_when: result.rc != 0
   ignore_errors: true
